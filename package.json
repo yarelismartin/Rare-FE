@@ -1,8 +1,8 @@
 {
-  "name": "next-firebase-starter",
+  "name": "rare",
   "private": true,
   "version": "1.0.0",
-  "author": "Trinity Christiana",
+  "author": "Hustle Group",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -18,7 +18,6 @@
     ]
   },
   "dependencies": {
-    "axios": "^0.21.1",
     "bootstrap": "^5.1.3",
     "firebase": "^8.2.0",
     "next": "12.0.7",
