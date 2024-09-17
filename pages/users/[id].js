@@ -1,34 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
 import getUserDetails from '../../api/userData';
 
 export default function UserProfile() {
-  const [user, setUser] = useState({});
+  const [userObj, setUserObj] = useState({});
   const router = useRouter();
-  const userId = router.query;
+  const { id } = router.query;
 
-  const getSingleUserDetails = async () => {
-    try {
-      const getUser = await getUserDetails(userId);
-      setUser(getUser);
-    } catch (error) {
-      console.error('Failed to fetch details for user:', error);
-    }
-  };
+  const getSingleUser = () => getUserDetails(id).then(setUserObj);
 
   useEffect(() => {
-    getSingleUserDetails();
-  }, [userId]);
+    getSingleUser();
+  }, [id]);
 
   return (
     <div>
-      <Image src={user.imageURL} />
-      <h1>Name: {user.firstName} {user.lastName}</h1>
-      <h2>Username: {user.userName}</h2>
-      <h2>Email: {user.email}</h2>
-      <h2>Subscribers: {user.subscriberCount}</h2>
-      <h4>Joined: {user.createdOn}</h4>
+      <img src={userObj?.imageURL} alt={userObj?.username} />
+      <h1>Name: {userObj?.firstName} {userObj?.lastName}</h1>
+      <h2>Username: {userObj?.userName}</h2>
+      <h2>Email: {userObj?.email}</h2>
+      <h2>Subscribers: {userObj?.subscriberCount}</h2>
+      <h4>Joined: {userObj?.createdOn}</h4>
     </div>
   );
 }
