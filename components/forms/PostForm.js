@@ -1,89 +1,140 @@
-// import React, { useState } from 'react';
-// import { Form } from 'react-bootstrap';
+import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
+import { Button, Form } from 'react-bootstrap';
+import { useRouter } from 'next/router';
+import { createPost, updatePost } from '../../api/postData';
+import getAllCategories from '../../api/categoryData';
+import { useAuth } from '../../utils/context/authContext';
 
-// const nullPost = {
-//   title: '',
-//   content: '',
-//   imageURL: '',
-// };
+const nullPost = {
+  title: '',
+  content: '',
+  imageURL: '',
+  categoryId: 0,
+};
 
-// export default function PostForm({ postObj }) {
-//   const [formDate, setFormData] = useState(nullPost);
+export default function PostForm({ postObj }) {
+  const [formData, setFormData] = useState(nullPost);
+  const [categories, setCategories] = useState([]);
+  const router = useRouter();
+  const { user } = useAuth();
 
-//   const handleChange = (e) => {
-//     const { name, value } = e.target;
-//     setFormData((prevState) => ({
-//       ...prevState,
-//       [name]: value,
-//     }));
-//   };
+  const getCategories = () => {
+    getAllCategories().then(setCategories);
+  };
 
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     if (postObj?.id) {
-//       console.warn('update');
-//     } else {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
 
-//     }
-//   };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (postObj?.id) {
+      updatePost(postObj.id, { ...formData, authorId: user.id }).then(() => {
+        router.push(`/posts/${postObj.id}`);
+      });
+    } else {
+      createPost({
+        ...formData,
+        authorId: user.id,
+      }).then(() => {
+        router.push('/');
+      });
+    }
+  };
 
-//   return (
-//     <Form onSubmit={handleSubmit}>
+  useEffect(() => {
+    getCategories();
+    if (postObj?.id) {
+      setFormData({ ...postObj, categoryId: postObj.category.id });
+    }
+  }, [postObj]);
 
-//       <Form.Group>
-//         <Form.Label> Title of Post</Form.Label>
-//         <Form.Control
-//           type="text"
-//           placeholder="Enter a title..."
-//           name="title"
-//           value={formData.title}
-//           onChange={handleChange}
-//           required
-//         />
-//       </Form.Group>
-
-//       <Form.Group>
-//         <Form.Label> Article Content</Form.Label>
-//         <Form.Control
-//           type="text"
-//           placeholder="What do you have to share..."
-//           name="content"
-//           value={formData.content}
-//           onChange={handleChange}
-//           required
-//         />
-//       </Form.Group>
-
-//       <Form.Group>
-//         <Form.Label> Image URL</Form.Label>
-//         <Form.Control
-//           type="text"
-//           placeholder="Image"
-//           name="imageURL"
-//           value={formData.imageURL}
-//           onChange={handleChange}
-//           required
-//         />
-//       </Form.Group>
-
-//       <label htmlFor="tags">Tags</label>
-//       <select id="tags" name="tags" multiple>
-//         {tags.map((tag) => (
-//           <option key={tag.id} value={tag.id}>
-//             {tag.label}
-//           </option>
-//         ))}
-//       </select>
-
-//     </Form>
-//   );
-// }
-import React from 'react';
-
-export default function PostForm() {
   return (
-    <div>
-      <p>test</p>
-    </div>
+    <Form onSubmit={handleSubmit}>
+      <Form.Group>
+        <Form.Label> Title of Post</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Enter a title..."
+          name="title"
+          value={formData.title}
+          onChange={handleChange}
+          required
+        />
+      </Form.Group>
+
+      <Form.Group>
+        <Form.Label> Article Content</Form.Label>
+        <Form.Control
+          as="textarea"
+          placeholder="What do you have to share..."
+          name="content"
+          style={{ height: '140px' }}
+          value={formData.content}
+          onChange={handleChange}
+          required
+        />
+      </Form.Group>
+
+      <Form.Group>
+        <Form.Label> Image URL</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Image"
+          name="imageURL"
+          value={formData.imageURL}
+          onChange={handleChange}
+        />
+      </Form.Group>
+
+      <Form.Group>
+        <Form.Label controlId="categorySelect" label="Category">
+          <Form.Select
+            aria-label="Category"
+            name="categoryId"
+            onChange={handleChange}
+            className="mb-3"
+            value={formData.categoryId}
+            required
+          >
+            <option value="">Select a Category</option>
+            {
+            categories.map((c) => (
+              <option
+                key={c.id}
+                value={c.id}
+              >
+                {c.label}
+              </option>
+            ))
+          }
+          </Form.Select>
+        </Form.Label>
+      </Form.Group>
+      <Button variant="primary" type="submit"> {postObj.id ? 'Update Post' : 'Create Post'}
+      </Button>
+    </Form>
   );
 }
+
+PostForm.propTypes = {
+  postObj: PropTypes.shape({
+    id: PropTypes.number,
+    title: PropTypes.string,
+    content: PropTypes.string,
+    imageURL: PropTypes.string,
+    authorId: PropTypes.string,
+    category: PropTypes.shape({
+      id: PropTypes.number,
+    }),
+  }),
+};
+
+PostForm.defaultProps = {
+  postObj: nullPost,
+};
