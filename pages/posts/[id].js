@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { format } from 'date-fns';
-import getSinglePost from '../../api/postData';
+import { getSinglePost } from '../../api/postData';
 
 export default function PostDetails() {
   const [post, setPost] = useState({});
