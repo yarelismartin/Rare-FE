@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
-import { Form } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 import { useRouter } from 'next/router';
 import { createPost, updatePost } from '../../api/postData';
 import getAllCategories from '../../api/categoryData';
@@ -10,9 +10,10 @@ const nullPost = {
   title: '',
   content: '',
   imageURL: '',
+  categoryId: 0,
 };
 
-export default function PostForm({ postObj, onUpdate }) {
+export default function PostForm({ postObj }) {
   const [formData, setFormData] = useState(nullPost);
   const [categories, setCategories] = useState([]);
   const router = useRouter();
@@ -33,8 +34,7 @@ export default function PostForm({ postObj, onUpdate }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (postObj?.id) {
-      updatePost(postObj.id, formData).then(() => {
-        onUpdate();
+      updatePost(postObj.id, { ...formData, authorId: user.id }).then(() => {
         router.push(`/posts/${postObj.id}`);
       });
     } else {
@@ -42,15 +42,17 @@ export default function PostForm({ postObj, onUpdate }) {
         ...formData,
         authorId: user.id,
       }).then(() => {
-        onUpdate();
         router.push('/');
       });
     }
   };
 
   useEffect(() => {
-    getCategories();
-  });
+    if (postObj?.id) {
+      getCategories();
+      setFormData({ ...postObj, categoryId: postObj.category.id });
+    }
+  }, [postObj]);
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -114,7 +116,8 @@ export default function PostForm({ postObj, onUpdate }) {
           </Form.Select>
         </Form.Label>
       </Form.Group>
-
+      <Button variant="primary" type="submit"> {postObj.id ? 'Update Post' : 'Create Post'}
+      </Button>
     </Form>
   );
 }
@@ -126,9 +129,10 @@ PostForm.propTypes = {
     content: PropTypes.string,
     imageURL: PropTypes.string,
     authorId: PropTypes.string,
-    image: PropTypes.string,
+    category: PropTypes.shape({
+      id: PropTypes.number,
+    }),
   }),
-  onUpdate: PropTypes.func.isRequired,
 };
 
 PostForm.defaultProps = {

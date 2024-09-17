@@ -39,8 +39,8 @@ const createPost = (payload) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-const updatePost = (payload) => new Promise((resolve, reject) => {
-  fetch(`${endpoint}/posts/${payload.id}`, {
+const updatePost = (postId, payload) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/posts/${postId}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
