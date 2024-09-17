@@ -6,7 +6,12 @@ import { registerUser } from '../../utils/auth'; // Update with path to register
 
 function RegisterForm({ user, updateUser }) {
   const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    userName: '',
     bio: '',
+    imageURL: '',
+    email: user.fbUser.email,
     uid: user.uid,
   });
 
@@ -16,11 +21,30 @@ function RegisterForm({ user, updateUser }) {
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <Form.Group className="mb-3" controlId="formBasicEmail">
-        <Form.Label>Gamer Bio</Form.Label>
-        <Form.Control as="textarea" name="bio" required placeholder="Enter your Bio" onChange={({ target }) => setFormData((prev) => ({ ...prev, [target.name]: target.value }))} />
-        <Form.Text className="text-muted">Let other gamers know a little bit about you...</Form.Text>
+    <Form className="register-form" onSubmit={handleSubmit}>
+      <Form.Group className="mb-3" controlId="formFirstName">
+        <Form.Label>First Name</Form.Label>
+        <Form.Control name="firstName" required placeholder="Enter first name..." onChange={({ target }) => setFormData((prev) => ({ ...prev, [target.name]: target.value }))} />
+      </Form.Group>
+      <Form.Group className="mb-3" controlId="formLastName">
+        <Form.Label>Last Name</Form.Label>
+        <Form.Control name="lastName" required placeholder="Enter last name..." onChange={({ target }) => setFormData((prev) => ({ ...prev, [target.name]: target.value }))} />
+      </Form.Group>
+      <Form.Group className="mb-3" controlId="formUserName">
+        <Form.Label>Username</Form.Label>
+        <Form.Control name="userName" required placeholder="Enter username..." onChange={({ target }) => setFormData((prev) => ({ ...prev, [target.name]: target.value }))} />
+      </Form.Group>
+      <Form.Group className="mb-3" controlId="formImageUrl">
+        <Form.Label>Profile Image URL</Form.Label>
+        <Form.Control name="imageURL" placeholder="Enter link to profile image..." onChange={({ target }) => setFormData((prev) => ({ ...prev, [target.name]: target.value }))} />
+      </Form.Group>
+      <Form.Group className="mb-3" controlId="formEmail">
+        <Form.Label>Email Address</Form.Label>
+        <Form.Control name="email" type="email" required placeholder="Enter email address..." value={formData.email} onChange={({ target }) => setFormData((prev) => ({ ...prev, [target.name]: target.value }))} />
+      </Form.Group>
+      <Form.Group className="mb-3" controlId="formImageUrl">
+        <Form.Label>User Bio</Form.Label>
+        <Form.Control name="bio" as="textarea" placeholder="Enter brief bio..." onChange={({ target }) => setFormData((prev) => ({ ...prev, [target.name]: target.value }))} />
       </Form.Group>
       <Button variant="primary" type="submit">
         Submit
@@ -31,6 +55,9 @@ function RegisterForm({ user, updateUser }) {
 
 RegisterForm.propTypes = {
   user: PropTypes.shape({
+    fbUser: PropTypes.shape({
+      email: PropTypes.string.isRequired,
+    }),
     uid: PropTypes.string.isRequired,
   }).isRequired,
   updateUser: PropTypes.func.isRequired,
