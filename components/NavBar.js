@@ -8,8 +8,11 @@ import {
   Button,
 } from 'react-bootstrap';
 import { signOut } from '../utils/auth';
+import { useAuth } from '../utils/context/authContext';
 
 export default function NavBar() {
+  const { user } = useAuth();
+
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Container>
@@ -22,6 +25,9 @@ export default function NavBar() {
             {/* CLOSE NAVBAR ON LINK SELECTION: https://stackoverflow.com/questions/72813635/collapse-on-select-react-bootstrap-navbar-with-nextjs-not-working */}
             <Link passHref href="/">
               <Nav.Link>Home</Nav.Link>
+            </Link>
+            <Link passHref href={`/users/${user.id}`}>
+              <Nav.Link>Profile</Nav.Link>
             </Link>
             <Link passHref href="/delete-me">
               <Nav.Link>Delete Me</Nav.Link>
