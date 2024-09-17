@@ -22,7 +22,11 @@ export default function NavBar() {
             <Link passHref href="/">
               <Nav.Link>Home</Nav.Link>
             </Link>
+            <Link passHref href="/posts/new">
+              <button className="btn btn-outline btn-primary fw-400 publish-btn" type="button">Publish</button>
+            </Link>
           </Nav>
+
         </Navbar.Collapse>
         <Button variant="danger" onClick={signOut}>
           Sign Out
