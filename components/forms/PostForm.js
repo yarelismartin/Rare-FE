@@ -48,8 +48,8 @@ export default function PostForm({ postObj }) {
   };
 
   useEffect(() => {
+    getCategories();
     if (postObj?.id) {
-      getCategories();
       setFormData({ ...postObj, categoryId: postObj.category.id });
     }
   }, [postObj]);
