@@ -2,7 +2,17 @@ import { clientCredentials } from '../utils/client';
 
 const endpoint = clientCredentials.databaseURL;
 
-console.warn(endpoint);
+const getAllPosts = () => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/posts`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => resolve(data))
+    .catch(reject);
+});
 
 const getSinglePost = (postId) => new Promise((resolve, reject) => {
   fetch(`${endpoint}/posts/${postId}`, {
@@ -16,4 +26,15 @@ const getSinglePost = (postId) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-export default getSinglePost;
+const deletePost = (postId) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/posts/${postId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((data) => resolve(data))
+    .catch(reject);
+});
+
+export { getAllPosts, getSinglePost, deletePost };
