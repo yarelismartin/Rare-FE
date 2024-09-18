@@ -6,7 +6,8 @@ import { useRouter } from 'next/router';
 import { createPost, updatePost } from '../../api/postData';
 import getAllCategories from '../../api/categoryData';
 import { useAuth } from '../../utils/context/authContext';
-import getAllTags from '../../api/tagData';
+import { getAllTags, createTag } from '../../api/tagData';
+import { addPostTag, removePostTag } from '../../api/postTagData';
 
 const nullPost = {
   title: '',
@@ -39,9 +40,28 @@ export default function PostForm({ postObj }) {
     setSelectedTags(selections);
   };
 
+  const managePostTags = async (postId) => {
+    selectedTags.forEach((tag) => {
+      // Create tag if returned by the label instead of the tag Id, then addTag
+      // Add tag to post if not yet attached to post
+      if (typeof tag.value === 'string') {
+        createTag({ label: tag.label }).then(({ id }) => addPostTag(postId, id));
+      } else if (!postObj?.tags?.some((postTag) => postTag.id === tag.value)) {
+        addPostTag(postId, tag.value);
+      }
+    });
+    postObj?.tags?.forEach((tag) => {
+      // Remove tag from post if tag no longer in list of selected tags
+      if (!selectedTags.some((sTag) => sTag.value === tag.id)) {
+        removePostTag(postId, tag.id);
+      }
+    });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (postObj?.id) {
+      managePostTags(postObj.id);
       updatePost(postObj.id, { ...formData, authorId: user.id }).then(() => {
         router.push(`/posts/${postObj.id}`);
       });
@@ -49,8 +69,8 @@ export default function PostForm({ postObj }) {
       createPost({
         ...formData,
         authorId: user.id,
-      }).then(() => {
-        router.push('/');
+      }).then(({ id }) => {
+        managePostTags(id).then(() => router.push(`/posts/${id}`));
       });
     }
   };
@@ -103,7 +123,7 @@ export default function PostForm({ postObj }) {
       </Form.Group>
 
       <Form.Group>
-        <Form.Label controlId="categorySelect" label="Category">
+        <Form.Label label="Category">
           <Form.Select
             aria-label="Category"
             name="categoryId"
