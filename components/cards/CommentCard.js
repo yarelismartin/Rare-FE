@@ -5,7 +5,7 @@ import { Card } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { formatDistanceToNow } from 'date-fns';
 import { useAuth } from '../../utils/context/authContext';
-import deleteComment from '../../api/commentData';
+import { deleteComment } from '../../api/commentData';
 
 export default function CommentCard({ commentObj, onUpdate }) {
   const { user } = useAuth();
@@ -87,7 +87,7 @@ export default function CommentCard({ commentObj, onUpdate }) {
 
 CommentCard.propTypes = {
   commentObj: PropTypes.shape({
-    id: PropTypes.string,
+    id: PropTypes.number,
     content: PropTypes.string,
     createdOn: PropTypes.string,
     firebaseKey: PropTypes.string,
