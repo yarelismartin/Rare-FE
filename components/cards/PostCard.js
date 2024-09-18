@@ -43,7 +43,6 @@ PostCard.propTypes = {
     title: PropTypes.string,
     category: PropTypes.object,
     author: PropTypes.object,
-    authorId: PropTypes.number,
     content: PropTypes.string,
     imageURL: PropTypes.string,
     publicationDate: PropTypes.string,
