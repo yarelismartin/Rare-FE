@@ -2,6 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Card, Col } from 'react-bootstrap';
+import { format } from 'date-fns';
 import { deletePost } from '../../api/postData';
 import { useAuth } from '../../utils/context/authContext';
 
@@ -14,6 +15,12 @@ export default function PostCard({ post, onUpdate }) {
     }
   };
 
+  const formatDate = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return format(date, 'MMMM d, yyyy');
+  };
+
   return (
     <Col xs={12} md={6}>
       <Card className="my-3">
@@ -21,7 +28,7 @@ export default function PostCard({ post, onUpdate }) {
         <Card.Body>
           <Card.Title>{post.title}</Card.Title>
           <Card.Text>{post.category.label}</Card.Text>
-          <Card.Text>{post.publicationDate}</Card.Text>
+          <Card.Text>{formatDate(post.publicationDate)}</Card.Text>
           <Card.Text>{post.author.firstName} {post.author.lastName}</Card.Text>
           <Card.Text>{post.content}</Card.Text>
           <Button href={`/posts/${post.id}`} variant="primary" className="me-2">View</Button>
