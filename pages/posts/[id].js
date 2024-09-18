@@ -68,7 +68,7 @@ export default function PostDetails() {
       </div>
       <div>
         {post.comments?.map((comment) => (
-          <CommentCard commentObj={comment} />
+          <CommentCard commentObj={comment} onUpdate={getAPost} />
         ))}
       </div>
     </div>
