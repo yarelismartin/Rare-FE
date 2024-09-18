@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { format } from 'date-fns';
 import { getSinglePost } from '../../api/postData';
+import CommentCard from '../../components/cards/CommentCard';
 
 export default function PostDetails() {
   const [post, setPost] = useState({});
@@ -16,7 +17,8 @@ export default function PostDetails() {
   };
 
   useEffect(() => {
-    getAPost();
+    getAPost(post);
+    console.warn();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
@@ -63,6 +65,11 @@ export default function PostDetails() {
           </div>
           <div><p>{post.content}</p></div>
         </div>
+      </div>
+      <div>
+        {post.comments?.map((comment) => (
+          <CommentCard commentObj={comment} />
+        ))}
       </div>
     </div>
   );
