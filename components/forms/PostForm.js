@@ -1,10 +1,12 @@
 import PropTypes from 'prop-types';
+import CreatableSelect from 'react-select/creatable';
 import React, { useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useRouter } from 'next/router';
 import { createPost, updatePost } from '../../api/postData';
 import getAllCategories from '../../api/categoryData';
 import { useAuth } from '../../utils/context/authContext';
+import getAllTags from '../../api/tagData';
 
 const nullPost = {
   title: '',
@@ -16,6 +18,8 @@ const nullPost = {
 export default function PostForm({ postObj }) {
   const [formData, setFormData] = useState(nullPost);
   const [categories, setCategories] = useState([]);
+  const [tags, setTags] = useState([]);
+  const [selectedTags, setSelectedTags] = useState([]);
   const router = useRouter();
   const { user } = useAuth();
 
@@ -29,6 +33,10 @@ export default function PostForm({ postObj }) {
       ...prevState,
       [name]: value,
     }));
+  };
+
+  const handleTagChange = (selections) => {
+    setSelectedTags(selections);
   };
 
   const handleSubmit = (e) => {
@@ -49,8 +57,10 @@ export default function PostForm({ postObj }) {
 
   useEffect(() => {
     getCategories();
+    getAllTags().then(setTags);
     if (postObj?.id) {
       setFormData({ ...postObj, categoryId: postObj.category.id });
+      setSelectedTags(postObj.tags.map((tag) => ({ value: tag.id, label: tag.label })));
     }
   }, [postObj]);
 
@@ -116,6 +126,18 @@ export default function PostForm({ postObj }) {
           </Form.Select>
         </Form.Label>
       </Form.Group>
+
+      <CreatableSelect
+        instanceId="tagSelect"
+        aria-label="Tags"
+        name="tags"
+        className="mb-3"
+        value={selectedTags}
+        isMulti
+        onChange={handleTagChange}
+        options={tags.map((tag) => ({ value: tag.id, label: tag.label }))}
+      />
+
       <Button variant="primary" type="submit"> {postObj.id ? 'Update Post' : 'Create Post'}
       </Button>
     </Form>
@@ -132,6 +154,10 @@ PostForm.propTypes = {
     category: PropTypes.shape({
       id: PropTypes.number,
     }),
+    tags: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.number,
+      label: PropTypes.string,
+    })),
   }),
 };
 
