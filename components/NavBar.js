@@ -2,7 +2,7 @@
 import React from 'react';
 import Link from 'next/link';
 import {
-  Navbar, //
+  Navbar,
   Container,
   Nav,
   Button,
@@ -24,6 +24,12 @@ export default function NavBar() {
             </Link>
             <Link passHref href="/posts/all">
               <Nav.Link>Discover</Nav.Link>
+            </Link>
+            <Link passHref href="/categories">
+              <Nav.Link>Category Manager</Nav.Link>
+            </Link>
+            <Link passHref href="/tags">
+              <Nav.Link>Tag Manager</Nav.Link>
             </Link>
             <Link passHref href="/posts/new">
               <button className="btn btn-outline btn-primary fw-400 publish-btn" type="button">Publish</button>
