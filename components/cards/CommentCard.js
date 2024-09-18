@@ -5,9 +5,16 @@ import { Card } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { formatDistanceToNow } from 'date-fns';
 import { useAuth } from '../../utils/context/authContext';
+import deleteComment from '../../api/commentData';
 
-export default function CommentCard({ commentObj }) {
+export default function CommentCard({ commentObj, onUpdate }) {
   const { user } = useAuth();
+
+  const deleteAComment = () => {
+    if (window.confirm('Do you want to delete this comment?')) {
+      deleteComment(commentObj.id).then(onUpdate);
+    }
+  };
 
   return (
     <div>
@@ -33,7 +40,7 @@ export default function CommentCard({ commentObj }) {
               height="54"
               viewBox="0 0 84 84"
               fill="none"
-              // onClick={handleClick}
+              onClick={deleteAComment}
               style={{ cursor: 'pointer' }}
               xmlns="http://www.w3.org/2000/svg"
             >
@@ -90,5 +97,5 @@ CommentCard.propTypes = {
       imageURL: PropTypes.string,
     }),
   }).isRequired,
-  // onUpdate: PropTypes.func.isRequired,
+  onUpdate: PropTypes.func.isRequired,
 };
