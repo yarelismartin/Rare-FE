@@ -30,8 +30,6 @@ export default function PostDetails() {
     const date = new Date(dateString);
     return format(date, 'MMMM d, yyyy');
   };
-
-  console.warn(post);
   return (
     <div>
       <div>
