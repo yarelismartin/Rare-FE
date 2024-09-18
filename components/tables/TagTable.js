@@ -13,14 +13,12 @@ export default function TagTable() {
     <Table striped bordered hover>
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Label</th>
+          <th>Tags</th>
         </tr>
       </thead>
       <tbody>
         {tag.map((t) => (
           <tr>
-            <td>{t.id}</td>
             <td>{t.label}</td>
           </tr>
         ))}

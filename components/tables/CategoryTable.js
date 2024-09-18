@@ -13,14 +13,12 @@ export default function CategoryTable() {
     <Table striped bordered hover>
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Label</th>
+          <th>Categories</th>
         </tr>
       </thead>
       <tbody>
         {category.map((cat) => (
           <tr>
-            <td>{cat.id}</td>
             <td>{cat.label}</td>
           </tr>
         ))}
