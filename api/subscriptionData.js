@@ -15,7 +15,7 @@ const getUserSubscriptions = (userId) => new Promise((resolve, reject) => {
 });
 
 const addSubscription = (userId, authorId) => new Promise((resolve, reject) => {
-  fetch(`${endpoint}/${userId}/add/${authorId}`, {
+  fetch(`${endpoint}/subscription/${userId}/add/${authorId}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -27,7 +27,7 @@ const addSubscription = (userId, authorId) => new Promise((resolve, reject) => {
 });
 
 const endSubscription = (userId, authorId) => new Promise((resolve, reject) => {
-  fetch(`${endpoint}/${userId}/add/${authorId}`, {
+  fetch(`${endpoint}/subscription/${userId}/add/${authorId}`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
@@ -38,4 +38,21 @@ const endSubscription = (userId, authorId) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-export { getUserSubscriptions, addSubscription, endSubscription };
+const canSubscribe = (userId, authorId) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/subscription/${userId}/${authorId}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => resolve(data))
+    .catch(reject);
+});
+
+export {
+  getUserSubscriptions,
+  addSubscription,
+  endSubscription,
+  canSubscribe,
+};
