@@ -2,6 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Card, Col } from 'react-bootstrap';
+import Link from 'next/link';
 import { deletePost } from '../../api/postData';
 import { useAuth } from '../../utils/context/authContext';
 
@@ -22,7 +23,9 @@ export default function PostCard({ post, onUpdate }) {
           <Card.Title>{post.title}</Card.Title>
           <Card.Text>{post.category.label}</Card.Text>
           <Card.Text>{post.publicationDate}</Card.Text>
-          <Card.Text>{post.author.firstName} {post.author.lastName}</Card.Text>
+          <Link href={`/users/${post.author.id}`} passHref>
+            <Card.Text>{post.author.firstName} {post.author.lastName}</Card.Text>
+          </Link>
           <Card.Text>{post.content}</Card.Text>
           <Button href={`/posts/${post.id}`} variant="primary" className="me-2">View</Button>
           {user.id === post.author.id && (
