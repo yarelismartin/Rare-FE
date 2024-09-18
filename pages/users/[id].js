@@ -7,19 +7,19 @@ import { canSubscribe } from '../../api/subscriptionData';
 
 export default function UserProfile() {
   const [userObj, setUserObj] = useState({});
+  const [canSubscribeToAuthor, setCanSubscribeToAuthor] = useState(false);
   const router = useRouter();
   const { id } = router.query;
   const { user } = useAuth();
 
   const getSingleUser = () => getUserDetails(id).then(setUserObj);
-  let canSubscribeToAuthor = false;
 
   useEffect(() => {
     getSingleUser();
   }, [id]);
 
   useEffect(() => {
-    canSubscribeToAuthor = canSubscribe(user.id, userObj.id);
+    canSubscribe(user.id, id).then((result) => setCanSubscribeToAuthor(result));
     console.warn(canSubscribeToAuthor);
   }, [user, id]);
 
