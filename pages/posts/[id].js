@@ -3,9 +3,13 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { format } from 'date-fns';
 import { getSinglePost } from '../../api/postData';
+import CommentCard from '../../components/cards/CommentCard';
+import CommentForm from '../../components/forms/CommentForm';
+import { useAuth } from '../../utils/context/authContext';
 
 export default function PostDetails() {
   const [post, setPost] = useState({});
+  const { user } = useAuth();
 
   // grab the postId from the path name
   const router = useRouter();
@@ -16,7 +20,7 @@ export default function PostDetails() {
   };
 
   useEffect(() => {
-    getAPost();
+    getAPost(post);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
@@ -26,8 +30,6 @@ export default function PostDetails() {
     const date = new Date(dateString);
     return format(date, 'MMMM d, yyyy');
   };
-
-  console.warn(post);
   return (
     <div>
       <div>
@@ -63,6 +65,14 @@ export default function PostDetails() {
           </div>
           <div><p>{post.content}</p></div>
         </div>
+      </div>
+      <div>
+        <CommentForm author={user.id} post={id} onUpdate={getAPost} />
+      </div>
+      <div>
+        {post.comments?.map((comment) => (
+          <CommentCard commentObj={comment} onUpdate={getAPost} key={comment.id} />
+        ))}
       </div>
     </div>
   );

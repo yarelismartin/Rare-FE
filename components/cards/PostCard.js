@@ -3,8 +3,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Card, Col } from 'react-bootstrap';
 import { deletePost } from '../../api/postData';
+import { useAuth } from '../../utils/context/authContext';
 
 export default function PostCard({ post, onUpdate }) {
+  const { user } = useAuth();
+
   const deleteThisPost = () => {
     if (window.confirm(`Delete ${post.title}?`)) {
       deletePost(post.id).then(() => onUpdate());
@@ -22,8 +25,12 @@ export default function PostCard({ post, onUpdate }) {
           <Card.Text>{post.author.firstName} {post.author.lastName}</Card.Text>
           <Card.Text>{post.content}</Card.Text>
           <Button href={`/posts/${post.id}`} variant="primary" className="me-2">View</Button>
-          <Button href={`/posts/edit/${post.id}`} variant="secondary" className="me-2">Edit</Button>
-          <Button onClick={deleteThisPost} variant="danger">Delete</Button>
+          {user.id === post.author.id && (
+            <>
+              <Button href={`/posts/edit/${post.id}`} variant="secondary" className="me-2">Edit</Button>
+              <Button onClick={deleteThisPost} variant="danger">Delete</Button>
+            </>
+          )}
         </Card.Body>
       </Card>
     </Col>
