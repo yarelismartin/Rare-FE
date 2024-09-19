@@ -4,11 +4,13 @@ import React from 'react';
 import { Card } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { formatDistanceToNow } from 'date-fns';
+import { useRouter } from 'next/router';
 import { useAuth } from '../../utils/context/authContext';
 import { deleteComment } from '../../api/commentData';
 
 export default function CommentCard({ commentObj, onUpdate }) {
   const { user } = useAuth();
+  const router = useRouter();
 
   const deleteAComment = () => {
     if (window.confirm('Do you want to delete this comment?')) {
@@ -32,7 +34,7 @@ export default function CommentCard({ commentObj, onUpdate }) {
                 src={commentObj.author?.imageURL}
                 alt="profile-pic"
               />
-              <Card.Title style={{ marginLeft: '8px' }}>{commentObj.author?.firstName}</Card.Title>
+              <Card.Title style={{ marginLeft: '8px' }} onClick={() => router.push(`/users/${commentObj.author?.id}`)}>{commentObj.author?.firstName}</Card.Title>
             </div>
             {commentObj.author?.id === user.id && (
             <svg
@@ -92,7 +94,7 @@ CommentCard.propTypes = {
     createdOn: PropTypes.string,
     firebaseKey: PropTypes.string,
     author: PropTypes.shape({
-      id: PropTypes.string,
+      id: PropTypes.number,
       firstName: PropTypes.string,
       imageURL: PropTypes.string,
     }),
