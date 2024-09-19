@@ -1,12 +1,21 @@
 import { useEffect, useState } from 'react';
-import { getAllPosts } from '../../api/postData';
+import { getAllPosts, getPostsByCategory } from '../../api/postData';
 import PostCard from '../../components/cards/PostCard';
+import CategoryFilter from '../../components/CategoryFilter';
 
 export default function AllPosts() {
   const [posts, setPosts] = useState([]);
 
   const getPosts = () => {
-    getAllPosts().then(setPosts);
+    getAllPosts().then((data) => setPosts(Array.isArray(data) ? data : []));
+  };
+
+  const filterPostsByCategory = (categoryId) => {
+    if (categoryId) {
+      getPostsByCategory(categoryId).then((data) => setPosts(Array.isArray(data) ? data : []));
+    } else {
+      getPosts();
+    }
   };
 
   useEffect(() => {
@@ -22,9 +31,14 @@ export default function AllPosts() {
       minHeight: '100vh',
     }}
     >
-      {posts.map((post) => (
-        <PostCard key={post.id} post={post} onUpdate={getPosts} />
-      ))}
+      <CategoryFilter onCategorySelect={filterPostsByCategory} />
+      {posts.length > 0 ? (
+        posts.map((post) => (
+          <PostCard key={post.id} post={post} onUpdate={getPosts} />
+        ))
+      ) : (
+        <p>No posts found for this category.</p>
+      )}
     </div>
   );
 }
