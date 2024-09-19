@@ -60,14 +60,14 @@ export default function PostDetails() {
           </div>
           <div>
             {post.tags?.map((t) => (
-              <p>#{t.label}</p>
+              <p key={t.id}>#{t.label}</p>
             ))}
           </div>
           <div><p>{post.content}</p></div>
         </div>
       </div>
       <div>
-        <CommentForm author={user.id} post={id} onUpdate={getAPost} />
+        <CommentForm author={user.id} post={Number(id)} onUpdate={getAPost} />
       </div>
       <div>
         {post.comments?.map((comment) => (
