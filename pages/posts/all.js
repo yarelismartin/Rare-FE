@@ -7,12 +7,12 @@ export default function AllPosts() {
   const [posts, setPosts] = useState([]);
 
   const getPosts = () => {
-    getAllPosts().then((data) => setPosts(Array.isArray(data) ? data : []));
+    getAllPosts().then(setPosts);
   };
 
   const filterPostsByCategory = (categoryId) => {
     if (categoryId) {
-      getPostsByCategory(categoryId).then((data) => setPosts(Array.isArray(data) ? data : []));
+      getPostsByCategory(categoryId).then(setPosts);
     } else {
       getPosts();
     }
@@ -26,7 +26,6 @@ export default function AllPosts() {
     <div style={{
       display: 'flex',
       flexDirection: 'column',
-      justifyContent: 'center',
       alignItems: 'center',
       minHeight: '100vh',
     }}

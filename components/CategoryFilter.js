@@ -16,6 +16,7 @@ export default function CategoryFilter({ onCategorySelect }) {
         Category
       </Dropdown.Toggle>
       <Dropdown.Menu>
+        <Dropdown.Item>All</Dropdown.Item>
         {category.map((cat) => (
           <Dropdown.Item
             key={cat.id}
