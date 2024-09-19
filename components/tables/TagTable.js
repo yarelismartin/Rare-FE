@@ -18,7 +18,7 @@ export default function TagTable() {
       </thead>
       <tbody>
         {tag.map((t) => (
-          <tr>
+          <tr key={t.id}>
             <td>{t.label}</td>
           </tr>
         ))}
