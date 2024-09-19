@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
 import { Button, Card, Col } from 'react-bootstrap';
 import Link from 'next/link';
+import { format } from 'date-fns';
 import { deletePost } from '../../api/postData';
 import { useAuth } from '../../utils/context/authContext';
 
@@ -17,6 +18,12 @@ export default function PostCard({ post, onUpdate }) {
     }
   };
 
+  const formatDate = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return format(date, 'MMMM d, yyyy');
+  };
+
   return (
     <Col xs={12} md={6}>
       <Card className="my-3">
@@ -24,7 +31,7 @@ export default function PostCard({ post, onUpdate }) {
         <Card.Body>
           <Card.Title>{post.title}</Card.Title>
           <Card.Text>{post.category.label}</Card.Text>
-          <Card.Text>{post.publicationDate}</Card.Text>
+          <Card.Text>{formatDate(post.publicationDate)}</Card.Text>
           {post.author
             ? (
               <Link href={`/users/${post.author.id}`} passHref>
