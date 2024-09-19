@@ -4,23 +4,30 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import getAllCategories from '../api/categoryData';
 
 export default function CategoryFilter({ onCategorySelect }) {
-  const [category, setCategory] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('Category');
+
+  const handleCategorySelect = (categoryId, categoryLabel) => {
+    setSelectedCategory(categoryLabel);
+    onCategorySelect(categoryId);
+  };
 
   useEffect(() => {
-    getAllCategories().then(setCategory);
+    getAllCategories().then((data) => {
+      setCategories([{ id: null, label: 'All' }, ...data]);
+    });
   }, []);
 
   return (
     <Dropdown>
       <Dropdown.Toggle variant="secondary" id="dropdown-basic">
-        Category
+        {selectedCategory}
       </Dropdown.Toggle>
       <Dropdown.Menu>
-        <Dropdown.Item>All</Dropdown.Item>
-        {category.map((cat) => (
+        {categories.map((cat) => (
           <Dropdown.Item
             key={cat.id}
-            onClick={() => onCategorySelect(cat.id)}
+            onClick={() => handleCategorySelect(cat.id, cat.label)}
           >
             {cat.label}
           </Dropdown.Item>
@@ -31,5 +38,5 @@ export default function CategoryFilter({ onCategorySelect }) {
 }
 
 CategoryFilter.propTypes = {
-  onCategorySelect: PropTypes.isRequired,
+  onCategorySelect: PropTypes.func.isRequired,
 };

@@ -11,10 +11,10 @@ export default function AllPosts() {
   };
 
   const filterPostsByCategory = (categoryId) => {
-    if (categoryId) {
-      getPostsByCategory(categoryId).then(setPosts);
-    } else {
+    if (categoryId === null) {
       getPosts();
+    } else {
+      getPostsByCategory(categoryId).then(setPosts);
     }
   };
 
