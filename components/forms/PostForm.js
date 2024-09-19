@@ -40,30 +40,49 @@ export default function PostForm({ postObj }) {
     setSelectedTags(selections);
   };
 
+  // The CreatableSelect component stores tag data as an array of objects where
+  // tags that exist in the "tags" state array (returned from the db) are stored as
+  // { value: {tag.id}, label: {tag.label} }
+  // and tags that do not exist in the "tags" state array (and need to be created) as
+  // { value: "NewTag", label: "NewTag", __isNew__: true }
   const managePostTags = async (postId) => {
-    selectedTags.forEach((tag) => {
-      // Create tag if returned by the label instead of the tag Id, then addTag
-      // Add tag to post if not yet attached to post
-      if (typeof tag.value === 'string') {
-        createTag({ label: tag.label }).then(({ id }) => addPostTag(postId, id));
-      } else if (!postObj?.tags?.some((postTag) => postTag.id === tag.value)) {
-        addPostTag(postId, tag.value);
-      }
-    });
-    postObj?.tags?.forEach((tag) => {
-      // Remove tag from post if tag no longer in list of selected tags
-      if (!selectedTags.some((sTag) => sTag.value === tag.id)) {
-        removePostTag(postId, tag.id);
-      }
-    });
+    // Create array of promises for tags that need to be added to post
+    const addedTags = await selectedTags
+      // Filter out tags that were on the post and will remain on the post after update
+      .filter((tag) => !postObj?.tags?.some((postTag) => postTag.id === tag.value))
+      .map((tag) => {
+        // If tag.value is of type string, then tag does not yet exist and needs to be created
+        // before adding it to the post
+        if (typeof tag.value === 'string') {
+          return createTag({ label: tag.label }).then(({ id }) => addPostTag(postId, id));
+        }
+        // Otherwise, tag.value is an int corresponding to the tagId in the db
+        // and only a call to add the postTag is necessary
+        return addPostTag(postId, tag.value);
+      // If no postTags need to be added, set addedTags to an empty array (rather than undefined)
+      }) || [];
+
+    // Create array of promises for tags that need to be removed from post (on update only)
+    // Iterate through tags from initial postObj
+    const removedTags = await postObj?.tags
+      // Filter out tags that exist in the selectedTags array (and will remain on the post)
+      ?.filter((tag) => !selectedTags.some((sTag) => sTag.value === tag.id))
+      // For tags that exist in old list (postObj.tags) and not in new list (selectedTags)
+      // call removePostTag
+      // If no postTags need to be removed, set removedTags to an empty array (rather than undefined)
+      ?.map((tag) => removePostTag(postId, tag.id)) || [];
+
+    // Flatten addedTags and removedTags into single array
+    // and ensure all promises resolve before exiting function
+    await Promise.all([...addedTags, ...removedTags]);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (postObj?.id) {
-      managePostTags(postObj.id);
       updatePost(postObj.id, { ...formData, authorId: user.id }).then(() => {
-        router.push(`/posts/${postObj.id}`);
+        // Call managePostTags to create/delete postTags from multi-select data
+        managePostTags(postObj.id).then(() => router.push(`/posts/${postObj.id}`));
       });
     } else {
       createPost({
