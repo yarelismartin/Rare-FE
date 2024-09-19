@@ -10,6 +10,7 @@ import { useAuth } from '../../utils/context/authContext';
 export default function PostCard({ post, onUpdate }) {
   const { user } = useAuth();
   const { id } = useRouter();
+
   const deleteThisPost = () => {
     if (window.confirm(`Delete ${post.title}?`)) {
       deletePost(post.id).then(() => onUpdate());

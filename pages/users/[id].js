@@ -1,20 +1,41 @@
 import React, { useEffect, useState } from 'react';
+import { Button } from 'react-bootstrap';
 import { useRouter } from 'next/router';
-// import { Button } from 'bootstrap';
 import getUserDetails from '../../api/userData';
 import { useAuth } from '../../utils/context/authContext';
-import { canSubscribe } from '../../api/subscriptionData';
+import { addSubscription, endSubscription, canSubscribe } from '../../api/subscriptionData';
 import PostCard from '../../components/cards/PostCard';
 
 export default function UserProfile() {
-  const [userObj, setUserObj] = useState({});
+  const [authorObj, setAuthorObj] = useState({});
   const [canSubscribeToAuthor, setCanSubscribeToAuthor] = useState(false);
   const router = useRouter();
   const { id } = router.query;
   const { user } = useAuth();
 
-  const getSingleUser = () => getUserDetails(id).then(setUserObj);
-  const userPosts = userObj.posts;
+  const getSingleUser = () => {
+    getUserDetails(id).then(setAuthorObj);
+  };
+
+  const startSubscription = async () => {
+    window.alert(`You've subscribed to ${authorObj.firstName} ${authorObj.lastName}`);
+    await addSubscription(user.id, authorObj.id).then(() => {
+      getSingleUser();
+    });
+    const canSubscribeResult = await canSubscribe(user.id, id); // Check if you can still subscribe
+    setCanSubscribeToAuthor(canSubscribeResult);
+  };
+
+  const stopSubscription = async () => {
+    window.alert(`You've unsubscribed to ${authorObj.firstName} ${authorObj.lastName}`);
+    await endSubscription(user.id, authorObj.id).then(() => {
+      getSingleUser();
+    });
+    const canSubscribeResult = await canSubscribe(user.id, id); // Check if you can still subscribe
+    setCanSubscribeToAuthor(canSubscribeResult);
+  };
+
+  const authorPosts = authorObj.posts;
 
   useEffect(() => {
     getSingleUser();
@@ -22,26 +43,24 @@ export default function UserProfile() {
 
   useEffect(() => {
     canSubscribe(user.id, id).then((result) => setCanSubscribeToAuthor(result));
-    console.warn(canSubscribeToAuthor);
   }, [user, id]);
 
   return (
     <>
       <div>
-        <img src={userObj?.imageURL} alt={userObj?.username} />
-        <h1>Name: {userObj?.firstName} {userObj?.lastName}</h1>
-        <h2>Username: {userObj?.userName}</h2>
-        <h2>Email: {userObj?.email}</h2>
-        <h2>Subscribers: {userObj?.subscriberCount}</h2>
-        <h4>Joined: {userObj?.createdOn}</h4>
-        {user.id !== userObj.id && (
+        <img src={authorObj?.imageURL} alt={authorObj?.username} />
+        <h1>Name: {authorObj?.firstName} {authorObj?.lastName}</h1>
+        <h2>Username: {authorObj?.userName}</h2>
+        <h2>Email: {authorObj?.email}</h2>
+        <h2>Subscribers: {authorObj?.subscriberCount}</h2>
+        <h4>Joined: {authorObj?.createdOn}</h4>
+        {user.id !== authorObj.id && (
           canSubscribeToAuthor ? (
-            <h2>Subscribe</h2>
+            <Button onClick={startSubscription} variant="secondary" className="me-2">Subscribe</Button>
           ) : (
-            <h2>Unsubscribe</h2>
+            <Button onClick={stopSubscription} variant="danger">Unsubscribe</Button>
           )
         )}
-        {console.warn(userPosts)}
       </div>
       <div style={{
         display: 'flex',
@@ -51,7 +70,7 @@ export default function UserProfile() {
         minHeight: '100vh',
       }}
       >
-        {userPosts?.map((post) => (
+        {authorPosts?.map((post) => (
           <PostCard key={post.id} post={post} onUpdate={getSingleUser} />
         ))}
       </div>

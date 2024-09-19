@@ -27,7 +27,7 @@ const addSubscription = (userId, authorId) => new Promise((resolve, reject) => {
 });
 
 const endSubscription = (userId, authorId) => new Promise((resolve, reject) => {
-  fetch(`${endpoint}/subscription/${userId}/add/${authorId}`, {
+  fetch(`${endpoint}/subscription/${userId}/end/${authorId}`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
