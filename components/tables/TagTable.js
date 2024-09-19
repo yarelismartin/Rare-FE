@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
-import getAllTags from '../../api/tagData';
+import { getAllTags } from '../../api/tagData';
 
 export default function TagTable() {
   const [tag, setTag] = useState([]);

@@ -8,8 +8,11 @@ import {
   Button,
 } from 'react-bootstrap';
 import { signOut } from '../utils/auth';
+import { useAuth } from '../utils/context/authContext';
 
 export default function NavBar() {
+  const { user } = useAuth();
+
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Container>
@@ -21,6 +24,9 @@ export default function NavBar() {
           <Nav className="me-auto">
             <Link passHref href="/">
               <Nav.Link>Home</Nav.Link>
+            </Link>
+            <Link passHref href={`/users/${user.id}`}>
+              <Nav.Link>Profile</Nav.Link>
             </Link>
             <Link passHref href="/posts/all">
               <Nav.Link>Discover</Nav.Link>
