@@ -14,6 +14,18 @@ const getAllPosts = () => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
+const getPostsByCategory = (categoryId) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/posts/categories/${categoryId}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => resolve(data))
+    .catch(reject);
+});
+
 const getSinglePost = (postId) => new Promise((resolve, reject) => {
   fetch(`${endpoint}/posts/${postId}`, {
     method: 'GET',
@@ -64,5 +76,5 @@ const deletePost = (postId) => new Promise((resolve, reject) => {
 });
 
 export {
-  getAllPosts, getSinglePost, deletePost, createPost, updatePost,
+  getAllPosts, getPostsByCategory, getSinglePost, deletePost, createPost, updatePost,
 };
