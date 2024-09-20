@@ -14,17 +14,13 @@ export default function AllPosts() {
   }, []);
 
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      minHeight: '100vh',
-    }}
-    >
-      {posts.map((post) => (
-        <PostCard key={post.id} post={post} onUpdate={getPosts} />
-      ))}
+    <div className="mt-5">
+      <div className="posts-container flex">
+        {posts.map((post) => (
+          <PostCard key={post.id} post={post} onUpdate={getPosts} />
+        ))}
+
+      </div>
     </div>
   );
 }

@@ -36,11 +36,11 @@ export default function PostCard({ post, onUpdate }) {
   return (
     <div>
       <Card style={{ width: '40rem' }}>
-        <Card.Img variant="top" src={post.imageURL} />
+        {post.imageURL ? <Card.Img variant="top" src={post.imageURL} style={{ width: '100%', height: '250px', objectFit: 'cover' }} /> : ''}
         <Card.Body>
           <div className="flex">
             <Link href={`/posts/${post.id}`} passHref>
-              <Card.Title style={{ cursor: 'pointer' }} className="post-card-title">{post.title}</Card.Title>
+              <Card.Title className="post-card-link">{post.title}</Card.Title>
             </Link>
             {isOwner && (
             <div className="menu-container">
@@ -77,7 +77,7 @@ export default function PostCard({ post, onUpdate }) {
             ? (
               <>
                 <Link href={`/users/${post.author.id}`} passHref>
-                  <Card.Subtitle className="mb-2 text-muted">
+                  <Card.Subtitle className="mb-2 post-card-link">
                     {post.author.firstName} {post.author.lastName}
                   </Card.Subtitle>
                 </Link>

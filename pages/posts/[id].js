@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
@@ -31,48 +32,75 @@ export default function PostDetails() {
     return format(date, 'MMMM d, yyyy');
   };
   return (
-    <div>
-      <div>
-        <div>
-          <p>{post.title}</p>
-          <p>{post.category?.label}</p>
-        </div>
-        <div className="img-container">
-          <img src={post.imageURL} alt="post-img-url" />
-        </div>
-        <div className="text-container">
-          <div className="flex flex-row">
-            <div>
+    <div className="post-details-container mt-7 mb-20">
+      {/* Blog Title and Category */}
+      <div className="post-header text-center">
+        <h1 className="post-title text-7xl font-black">{post.title}</h1>
+      </div>
+
+      {/* Post Image */}
+      {post.imageURL && (
+      <div className="img-container mt-9">
+        <img
+          src={post.imageURL}
+          alt="post-img-url"
+          style={{
+            width: '100%',
+            height: '60vh',
+            objectFit: 'cover',
+          }}
+        />
+      </div>
+      )}
+
+      <div className="w-[85%] m-auto">
+
+        {/* Author */}
+        <div className="post-meta-container mb-3">
+          <div className="post-meta flex justify-between items-center mt-8">
+            <div className="flex">
               <img
                 src={post.author?.imageURL}
                 alt="author"
                 style={{
-                  width: '40px',
-                  height: '40px',
+                  width: '50px',
+                  height: '50px',
                   borderRadius: '50%',
                   objectFit: 'cover',
                   marginRight: '15px',
                 }}
               />
-              <p className="font-thin">By {post.author?.firstName} {post.author?.lastName}</p>
+              <p className="font-semibold mt-auto">By {post.author?.firstName} {post.author?.lastName}</p>
             </div>
-            <p className="ml-4">{formatDate(post.publicationDate)}</p>
+            <p className="font-light mt-auto">{formatDate(post.publicationDate)}</p>
+
           </div>
-          <div>
-            {post.tags?.map((t) => (
-              <p key={t.id}>#{t.label}</p>
-            ))}
-          </div>
-          <div><p>{post.content}</p></div>
         </div>
-      </div>
-      <div>
-        <CommentForm author={user.id} post={Number(id)} onUpdate={getAPost} />
-      </div>
-      <div>
-        {post.comments?.map((comment) => (
-          <CommentCard commentObj={comment} onUpdate={getAPost} key={comment.id} />
-        ))}
+        <p className="post-category font-medium">{post.category?.label}</p>
+
+        {/* Post Tags */}
+        <div className="post-tags flex gap-2 flex-wrap">
+          {post.tags?.map((t) => (
+            <span key={t.id} className="tag"> #{t.label}</span>
+          ))}
+        </div>
+
+        {/* Post Content */}
+        <div className="post-content">
+          <p>{post.content}</p>
+        </div>
+
+        {/* Comment Form */}
+        <div className="comment-section">
+          <CommentForm author={user.id} post={Number(id)} onUpdate={getAPost} />
+        </div>
+
+        {/* Comments */}
+        <div className="comments-list">
+          {post.comments?.map((comment) => (
+            <CommentCard commentObj={comment} onUpdate={getAPost} key={comment.id} />
+          ))}
+        </div>
       </div>
     </div>
   );

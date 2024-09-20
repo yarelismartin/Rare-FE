@@ -14,13 +14,8 @@ export default function Home() {
   }, []);
 
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      minHeight: '100vh',
-    }}
+    <div
+      className="posts-container flex mt-5"
     >
       {posts.map((post) => (
         <PostCard key={post.id} post={post} onUpdate={getPosts} />
