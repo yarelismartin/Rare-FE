@@ -10,7 +10,9 @@ import { useAuth } from '../../utils/context/authContext';
 
 export default function PostCard({ post, onUpdate }) {
   const { user } = useAuth();
-  const { id } = useRouter();
+  const router = useRouter();
+  const { id } = router.query;
+  console.warn(id);
 
   const deleteThisPost = () => {
     if (window.confirm(`Delete ${post.title}?`)) {
@@ -48,7 +50,8 @@ export default function PostCard({ post, onUpdate }) {
               <Button onClick={deleteThisPost} variant="danger">Delete</Button>
             </>
           )}
-          {user.id === id && (
+          {console.warn(user.id, id)}
+          {user.id.toString() === id && (
             <>
               <Button href={`/posts/edit/${post.id}`} variant="secondary" className="me-2">Edit</Button>
               <Button onClick={deleteThisPost} variant="danger">Delete</Button>
