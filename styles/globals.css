@@ -1,4 +1,5 @@
 @import 'bootstrap/dist/css/bootstrap.css';
+@import url('https://fonts.googleapis.com/css2?family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -7,8 +8,7 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: "Raleway", sans-serif;
 }
 
 a {
@@ -21,5 +21,189 @@ a {
 }
 
 body {
-  background-color: #88effd;
+  background-color: #F9F9F9;
+}
+
+/* Navbar Start */
+.navbar{
+  background-color: #ffffff92;
+  .nav-link{
+    color: black;
+  }
+}
+.navbar .nav-link {
+  color: black !important;
+  font-family: "Playfair Display", serif;
+  font-weight: 400;
+}
+
+.navbar .nav-link.active {
+  color: #0d6efd !important; 
+  background-color: transparent !important;
+}
+
+.navbar {
+  padding:  0 2rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, .09);
+  width: 100%;
+  @media (max-width: 400px) {
+    padding:  0;
+  }
+}
+
+.custom-navbar .navbar-collapse {
+  padding: 1rem;
+  border-radius: 0.25rem;
+}
+
+.publish-btn:hover{
+ background-color: #0e54be;
+}
+
+
+/* Navbar End */
+
+/* User, Category, Tag Start */
+.table {
+  border-radius: 8px; 
+  overflow: hidden; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+
+}
+
+.table-container{
+  width: 80%;
+  margin: 0 auto;
+}
+
+.form-container{
+  width: 80%; 
+  margin: 0 auto;;
+
+}
+
+.remove-tag-btn:hover{
+  color: red;
+}
+
+.user-name:hover{
+  color: #0d6efd;
+}
+/* User, Category, Tag End */
+
+
+/* Posts page Start */
+.filter-posts-btns{
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.filter-btn, 
+.dropdown-toggle {
+  background-color: #0d6efd;
+  border-radius: 20px !important;
+  border: 3px solid;
+  border-color: rgba(236, 236, 236, 0.656);
+  margin-bottom: 10px;
+  &:hover {
+    border-color: rgba(207, 207, 207, 0.493); /* Slightly darker or more visible border on hover */
+  }
+
+}
+
+.post-card-title:hover {
+  color: #0d6efd;
+}
+
+.card-body{
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.posts-container{
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  gap: 15px;
+}
+
+.post-card-tags-container{
+  gap: 5px;
+  margin-bottom: 5px;
+}
+
+.post-card-icon {
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  border: none;
+}
+
+.post-card-icon:hover {
+  transform: scale(1.5);
+  /* path {
+   fill: #8d38fc; 
+  } */
+  
+}
+
+.menu-container {
+  margin-left: auto;
+  position: relative;
+  padding: 1px 1px;
+  &:hover {
+    background-color: #E5E5E5; /* Sets a transparent grey background on hover */ 
+    border-radius: 10px;
+  }
+}
+
+.menu-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 1px;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 26px; /* Positioned below the menu button */
+  right: 0; /* Aligned to the right edge of the menu button */
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  width: 120px;
+  z-index: 10; /* Ensures the dropdown is above other elements */
+}
+
+.dropdown-item {
+  display: flex;
+  padding: 8px 12px;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.dropdown-item svg {
+  margin-right: 8px; /* Adjust the value as needed */
+}
+
+.dropdown-item.delete {
+  color: red; /* Specific styling for the delete item to make text red */
+}
+
+.post-details{
+  margin: auto;
+}
+
+/* Posts page End */
+
+.flex{
+  display: flex;
+}
+
+
+.app-container{
+  margin: 0 auto;
+  /* container doesn't stretch beyond 107rem even if the screen size is larger. */
+  max-width: 107rem;
+  padding: 20px;
 }

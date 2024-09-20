@@ -38,7 +38,7 @@ export default function PostDetails() {
           <p>{post.category?.label}</p>
         </div>
         <div className="img-container">
-          <img src={post.imgURL} alt="post-img-url" />
+          <img src={post.imageURL} alt="post-img-url" />
         </div>
         <div className="text-container">
           <div className="flex flex-row">
