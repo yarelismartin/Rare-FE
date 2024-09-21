@@ -2,8 +2,9 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { Button } from 'react-bootstrap';
 import { format } from 'date-fns';
-import { getSinglePost } from '../../api/postData';
+import { getSinglePost, deletePost } from '../../api/postData';
 import CommentCard from '../../components/cards/CommentCard';
 import CommentForm from '../../components/forms/CommentForm';
 import { useAuth } from '../../utils/context/authContext';
@@ -20,6 +21,12 @@ export default function PostDetails() {
     getSinglePost(id).then(setPost);
   };
 
+  const deleteThisPost = () => {
+    if (window.confirm(`Delete ${post.title}?`)) {
+      deletePost(post.id).then(() => router.push('/'));
+    }
+  };
+
   useEffect(() => {
     getAPost(post);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -31,6 +38,9 @@ export default function PostDetails() {
     const date = new Date(dateString);
     return format(date, 'MMMM d, yyyy');
   };
+
+  const isOwner = user.id === post.author?.id;
+
   return (
     <div className="post-details-container mt-7 mb-20">
       {/* Blog Title and Category */}
@@ -88,6 +98,14 @@ export default function PostDetails() {
         {/* Post Content */}
         <div className="post-content">
           <p>{post.content}</p>
+        </div>
+        <div>
+          {isOwner && (
+            <>
+              <Button href={`/posts/edit/${post.id}`} variant="secondary" className="me-2">Edit</Button>
+              <Button onClick={deleteThisPost} variant="danger">Delete</Button>
+            </>
+          )}
         </div>
 
         {/* Comment Form */}

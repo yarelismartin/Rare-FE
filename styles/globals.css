@@ -60,6 +60,12 @@ body {
  background-color: #0e54be;
 }
 
+.nav-container {
+  display: flex;
+  column-gap: 10px;
+  justify-content: space-between;
+}
+
 
 /* Navbar End */
 

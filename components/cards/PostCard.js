@@ -86,7 +86,10 @@ export default function PostCard({ post, onUpdate }) {
             : '' }
           <Card.Text>{post.category.label}</Card.Text>
           <Card.Text>{formatDate(post.publicationDate)}</Card.Text>
-          <Card.Text>{post.content}</Card.Text>
+          <Card.Text style={{ maxHeight: '20vh', overflow: 'hidden' }}>{post.content}</Card.Text>
+          <Link href={`/posts/${post.id}`} passHref>
+            <Card.Text style={{ marginTop: '10px' }}><b>Keep Reading...</b></Card.Text>
+          </Link>
         </Card.Body>
       </Card>
     </div>
