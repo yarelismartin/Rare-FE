@@ -42,9 +42,12 @@ export default function Home() {
     >
 
       {hasSubscriptions ? (
-        subscribedPosts.map((post) => (
-          <PostCard key={post.id} post={post} onUpdate={getSubscriptions} />
-        ))
+        <>
+          <h2>Your Subscriptions</h2>
+          {subscribedPosts.map((post) => (
+            <PostCard key={post.id} post={post} onUpdate={getSubscriptions} />
+          ))}
+        </>
       ) : (
         <>
           <CategoryFilter onCategorySelect={filterPostsByCategory} />
