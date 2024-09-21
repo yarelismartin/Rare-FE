@@ -1,18 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { useAuth } from '../../utils/context/authContext';
 import { searchPosts } from '../../api/postData';
 import PostCard from '../../components/cards/PostCard';
 
 export default function Search() {
   const [filteredPosts, setFilteredPosts] = useState([]);
-  const { user } = useAuth();
   const router = useRouter();
   const { searchInput } = router.query;
 
   const searchAllPosts = () => {
-    searchPosts(searchInput, user.uid).then(setFilteredPosts);
+    searchPosts(searchInput).then(setFilteredPosts);
   };
 
   useEffect(() => {
@@ -27,7 +25,7 @@ export default function Search() {
       <div className="posts-container flex mt-5">
         {filteredPosts.length > 0 ? (
           filteredPosts.map((post) => (
-            <PostCard key={post.id} uid={user.uid} post={post} onUpdate={searchAllPosts} />
+            <PostCard key={post.id} post={post} onUpdate={searchAllPosts} />
           ))
         ) : (
           <p>No posts found.</p>
