@@ -24,13 +24,7 @@ export default function Search() {
 
   return (
     <>
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        minHeight: '100vh',
-      }}
-      >
+      <div className="posts-container flex mt-5">
         {filteredPosts.length > 0 ? (
           filteredPosts.map((post) => (
             <PostCard key={post.id} uid={user.uid} post={post} onUpdate={searchAllPosts} />
