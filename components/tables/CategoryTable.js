@@ -18,7 +18,7 @@ export default function CategoryTable() {
       </thead>
       <tbody>
         {category.map((cat) => (
-          <tr>
+          <tr key={cat.id}>
             <td>{cat.label}</td>
           </tr>
         ))}
