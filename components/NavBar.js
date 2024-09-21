@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import Link from 'next/link';
 import {
@@ -9,6 +8,7 @@ import {
 } from 'react-bootstrap';
 import { signOut } from '../utils/auth';
 import { useAuth } from '../utils/context/authContext';
+import SearchBar from './SearchBar';
 
 export default function NavBar() {
   const { user } = useAuth();
@@ -42,6 +42,7 @@ export default function NavBar() {
             </Link>
           </Nav>
         </Navbar.Collapse>
+        <SearchBar />
         <Button variant="danger" onClick={signOut}>
           Sign Out
         </Button>
