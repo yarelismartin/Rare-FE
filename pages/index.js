@@ -1,38 +1,64 @@
 import { useEffect, useState } from 'react';
 import { getAllPosts, getPostsByCategory } from '../api/postData';
+import { getUserSubscriptions } from '../api/subscriptionData';
 import PostCard from '../components/cards/PostCard';
 import CategoryFilter from '../components/CategoryFilter';
+import { useAuth } from '../utils/context/authContext';
 
 export default function Home() {
-  const [posts, setPosts] = useState([]);
+  const [subscribedPosts, setSubscribedPosts] = useState([]);
+  const [discoverPosts, setDiscoverPosts] = useState([]);
+  const { user } = useAuth();
 
-  const getPosts = () => {
-    getAllPosts().then(setPosts);
+  const getSubscriptions = () => {
+    getUserSubscriptions(user.id).then(setSubscribedPosts);
+  };
+
+  const getDiscoverPosts = () => {
+    getAllPosts().then(setDiscoverPosts);
   };
 
   const filterPostsByCategory = (categoryId) => {
     if (categoryId === null) {
-      getPosts();
+      getDiscoverPosts();
     } else {
-      getPostsByCategory(categoryId).then(setPosts);
+      getPostsByCategory(categoryId).then(setDiscoverPosts);
     }
   };
 
+  const hasSubscriptions = subscribedPosts.length > 0;
+
   useEffect(() => {
-    getPosts();
+    getDiscoverPosts();
   }, []);
+
+  useEffect(() => {
+    getSubscriptions();
+  }, [user]);
 
   return (
     <div
       className="posts-container flex mt-5"
     >
-      <CategoryFilter onCategorySelect={filterPostsByCategory} />
-      {posts.length > 0 ? (
-        posts.map((post) => (
-          <PostCard key={post.id} post={post} onUpdate={getPosts} />
-        ))
+
+      {hasSubscriptions ? (
+        <>
+          <h2>Your Subscriptions</h2>
+          {subscribedPosts.map((post) => (
+            <PostCard key={post.id} post={post} onUpdate={getSubscriptions} />
+          ))}
+        </>
       ) : (
-        <p>No posts found for this category.</p>
+        <>
+          <CategoryFilter onCategorySelect={filterPostsByCategory} />
+          {discoverPosts.length > 0 ? (
+            discoverPosts.map((post) => (
+              <PostCard key={post.id} post={post} onUpdate={getDiscoverPosts} />
+            ))
+          ) : (
+            <p>No posts found for this category.</p>
+          )}
+        </>
       )}
     </div>
   );
