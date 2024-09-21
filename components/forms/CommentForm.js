@@ -34,7 +34,7 @@ export default function CommentForm({ onUpdate, author, post }) {
 
   return (
     <div style={{
-      border: '1px solid', margin: '20px auto', padding: '15px 0px', borderRadius: '10px', borderColor: '#0089FF',
+      border: '1px solid', margin: '20px auto', padding: '15px 15px', borderRadius: '10px', borderColor: 'black', width: '80%',
     }}
     >
       <Form onSubmit={handleSubmit}>

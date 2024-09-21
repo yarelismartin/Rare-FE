@@ -34,7 +34,12 @@ export default function TagForm({ onUpdate }) {
           required
         />
       </Form.Group>
-      <Button variant="primary" type="submit">Create Tag</Button>
+      <Button
+        variant="primary"
+        type="submit"
+        className="mt-3"
+      >Create Tag
+      </Button>
     </Form>
   );
 }
