@@ -75,6 +75,30 @@ const deletePost = (postId) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
+const searchPosts = (searchValue) => new Promise((resolve, reject) => {
+  fetch(`${clientCredentials.databaseURL}/posts/search?searchValue=${searchValue}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+  })
+    .then((response) => {
+      if (!response.ok) {
+        return reject(new Error('Network response was not ok'));
+      }
+      return response.json();
+    })
+    .then((data) => {
+      if (data.length === 0) {
+        resolve([]);
+      } else {
+        resolve(data);
+      }
+    })
+    .catch(reject);
+});
+
 export {
-  getAllPosts, getPostsByCategory, getSinglePost, deletePost, createPost, updatePost,
+  getAllPosts, getPostsByCategory, getSinglePost, deletePost, createPost, updatePost, searchPosts,
 };

@@ -1,16 +1,15 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import Link from 'next/link';
 import {
   Navbar,
   Container,
   Nav,
-  // Button,
   Image,
   Button,
 } from 'react-bootstrap';
 import { signOut } from '../utils/auth';
 import { useAuth } from '../utils/context/authContext';
+import SearchBar from './SearchBar';
 
 export default function NavBar() {
   const { user } = useAuth();
@@ -41,14 +40,15 @@ export default function NavBar() {
             <Link passHref href="/tags">
               <Nav.Link className="nav-link">Tag Manager</Nav.Link>
             </Link>
+            <SearchBar />
             <Link passHref href="/posts/new">
               <button className="btn btn-outline btn-primary fw-400 publish-btn" type="button">Publish</button>
             </Link>
+            <Button variant="danger" onClick={signOut}>
+              Sign Out
+            </Button>
           </Nav>
         </Navbar.Collapse>
-        <Button variant="danger" onClick={signOut}>
-          Sign Out
-        </Button>
       </Container>
     </Navbar>
   );
