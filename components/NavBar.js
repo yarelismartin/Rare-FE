@@ -7,8 +7,9 @@ import {
   Nav,
   // Button,
   Image,
+  Button,
 } from 'react-bootstrap';
-// import { signOut } from '../utils/auth';
+import { signOut } from '../utils/auth';
 import { useAuth } from '../utils/context/authContext';
 
 export default function NavBar() {
@@ -45,9 +46,9 @@ export default function NavBar() {
             </Link>
           </Nav>
         </Navbar.Collapse>
-        {/* <Button variant="danger" onClick={signOut}>
+        <Button variant="danger" onClick={signOut}>
           Sign Out
-        </Button> */}
+        </Button>
       </Container>
     </Navbar>
   );
