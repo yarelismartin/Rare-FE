@@ -86,20 +86,20 @@ export default function PostDetails() {
 
           </div>
         </div>
-        <p className="post-category font-medium">{post.category?.label}</p>
+        <p className="post-category font-medium" style={{ marginTop: '10px' }}>{post.category?.label}</p>
 
         {/* Post Tags */}
-        <div className="post-tags flex gap-2 flex-wrap">
+        <div className="post-tags flex gap-2 flex-wrap" style={{ marginTop: '10px' }}>
           {post.tags?.map((t) => (
             <span key={t.id} className="tag"> #{t.label}</span>
           ))}
         </div>
 
         {/* Post Content */}
-        <div className="post-content">
+        <div className="post-content" style={{ marginTop: '10px' }}>
           <p>{post.content}</p>
         </div>
-        <div>
+        <div style={{ marginTop: '10px' }}>
           {isOwner && (
             <>
               <Button href={`/posts/edit/${post.id}`} variant="secondary" className="me-2">Edit</Button>
