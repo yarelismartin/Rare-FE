@@ -1,14 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Table } from 'react-bootstrap';
-import { getAllTags } from '../../api/tagData';
+import PropTypes from 'prop-types';
 
-export default function TagTable() {
-  const [tag, setTag] = useState([]);
-
-  useEffect(() => {
-    getAllTags().then(setTag);
-  }, []);
-
+export default function TagTable({ tags }) {
   return (
     <Table striped bordered hover>
       <thead>
@@ -17,8 +11,8 @@ export default function TagTable() {
         </tr>
       </thead>
       <tbody>
-        {tag.map((t) => (
-          <tr>
+        {tags?.map((t) => (
+          <tr key={t.id}>
             <td>{t.label}</td>
           </tr>
         ))}
@@ -26,3 +20,10 @@ export default function TagTable() {
     </Table>
   );
 }
+
+TagTable.propTypes = {
+  tags: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number,
+    label: PropTypes.string,
+  })).isRequired,
+};
