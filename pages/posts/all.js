@@ -25,15 +25,15 @@ export default function AllPosts() {
   return (
     <div className="mt-5">
       <div className="posts-container flex">
-      <CategoryFilter onCategorySelect={filterPostsByCategory} />
-      {posts.length > 0 ? (
-        posts.map((post) => (
-          <PostCard key={post.id} post={post} onUpdate={getPosts} />
-        ))
-      ) : (
-        <p>No posts found for this category.</p>
-      )}
-    </div>
+        <CategoryFilter onCategorySelect={filterPostsByCategory} />
+        {posts.length > 0 ? (
+          posts.map((post) => (
+            <PostCard key={post.id} post={post} onUpdate={getPosts} />
+          ))
+        ) : (
+          <p>No posts found for this category.</p>
+        )}
+      </div>
     </div>
   );
 }
