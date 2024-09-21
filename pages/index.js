@@ -23,12 +23,8 @@ export default function Home() {
   }, []);
 
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      minHeight: '100vh',
-    }}
+    <div
+      className="posts-container flex mt-5"
     >
       <CategoryFilter onCategorySelect={filterPostsByCategory} />
       {posts.length > 0 ? (

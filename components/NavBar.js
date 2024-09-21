@@ -5,6 +5,8 @@ import {
   Navbar,
   Container,
   Nav,
+  // Button,
+  Image,
   Button,
 } from 'react-bootstrap';
 import { signOut } from '../utils/auth';
@@ -14,28 +16,30 @@ export default function NavBar() {
   const { user } = useAuth();
 
   return (
-    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+    <Navbar collapseOnSelect expand="lg" bg="light" variant="light" className="custom-navbar">
       <Container>
         <Link passHref href="/">
-          <Navbar.Brand>RARE</Navbar.Brand>
+          <Navbar.Brand>
+            <Image src="/RARE_PUBLISHING-logo.png" layout="fill" alt="Rare Logo" style={{ width: '140px', height: '60px' }} />
+          </Navbar.Brand>
         </Link>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="me-auto">
+          <Nav className="ms-auto">
             <Link passHref href="/">
-              <Nav.Link>Home</Nav.Link>
+              <Nav.Link className="nav-link">Home</Nav.Link>
             </Link>
             <Link passHref href={`/users/${user.id}`}>
-              <Nav.Link>Profile</Nav.Link>
+              <Nav.Link className="nav-link">Profile</Nav.Link>
             </Link>
             <Link passHref href="/posts/all">
-              <Nav.Link>Discover</Nav.Link>
+              <Nav.Link className="nav-link">Discover</Nav.Link>
             </Link>
             <Link passHref href="/categories">
-              <Nav.Link>Category Manager</Nav.Link>
+              <Nav.Link className="nav-link">Category Manager</Nav.Link>
             </Link>
             <Link passHref href="/tags">
-              <Nav.Link>Tag Manager</Nav.Link>
+              <Nav.Link className="nav-link">Tag Manager</Nav.Link>
             </Link>
             <Link passHref href="/posts/new">
               <button className="btn btn-outline btn-primary fw-400 publish-btn" type="button">Publish</button>

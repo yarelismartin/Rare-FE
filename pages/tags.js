@@ -15,10 +15,10 @@ export default function TagManager() {
   }, []);
 
   return (
-    <>
-      <h1 className="display-1 mb-4">Tag Manager</h1>
+    <div className="mt-5 mb-5">
+      <h2 className="display-1 mb-4 font-thin text-5xl">Tag Manager</h2>
       <TagTable tags={tags || []} />
       <TagForm onUpdate={updateTags} />
-    </>
+    </div>
   );
 }
