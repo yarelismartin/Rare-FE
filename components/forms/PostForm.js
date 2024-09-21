@@ -104,7 +104,7 @@ export default function PostForm({ postObj }) {
   }, [postObj]);
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit} className="mt-7 w-[80%] ml-auto mr-auto">
       <Form.Group>
         <Form.Label> Title of Post</Form.Label>
         <Form.Control
@@ -117,7 +117,7 @@ export default function PostForm({ postObj }) {
         />
       </Form.Group>
 
-      <Form.Group>
+      <Form.Group className="mt-2">
         <Form.Label> Article Content</Form.Label>
         <Form.Control
           as="textarea"
@@ -130,7 +130,7 @@ export default function PostForm({ postObj }) {
         />
       </Form.Group>
 
-      <Form.Group>
+      <Form.Group className="mt-2">
         <Form.Label> Image URL</Form.Label>
         <Form.Control
           type="text"
@@ -141,7 +141,7 @@ export default function PostForm({ postObj }) {
         />
       </Form.Group>
 
-      <Form.Group>
+      <Form.Group className="mt-4">
         <Form.Label label="Category">
           <Form.Select
             aria-label="Category"
@@ -171,6 +171,7 @@ export default function PostForm({ postObj }) {
         aria-label="Tags"
         name="tags"
         className="mb-3"
+        placeholder="Select or Create a Tag..."
         value={selectedTags}
         isMulti
         onChange={handleTagChange}

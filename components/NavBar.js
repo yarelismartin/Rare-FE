@@ -19,7 +19,7 @@ export default function NavBar() {
       <Container>
         <Link passHref href="/">
           <Navbar.Brand>
-            <Image src="/RARE_PUBLISHING-logo.png" layout="fill" alt="Rare Logo" width="140" height="60" />
+            <Image src="/RARE_PUBLISHING-logo.png" layout="fill" alt="Rare Logo" style={{ width: '140px', height: '60px' }} />
           </Navbar.Brand>
         </Link>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
